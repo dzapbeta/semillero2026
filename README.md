@@ -12,7 +12,7 @@ de cada cosa) y cambies valores para ver qué pasa.
 - JDK 21 (Eclipse Temurin)
 - Gradle 9.7.1 instalado (este proyecto no trae `gradlew`, se usa el comando `gradle`)
 - Git
-- IntelliJ IDEA Community (recomendado)
+- IntelliJ IDEA (recomendado)
 
 La instalación paso a paso en Windows está en `material-de-apoyo/Prerrequisitos_Instalacion_Entorno_Windows.docx`.
 
