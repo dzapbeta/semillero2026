@@ -184,6 +184,7 @@ Gradle no quedó en el PATH. Revisa la guía de prerrequisitos y abre una ventan
 
 En la carpeta `material-de-apoyo/`:
 
+- `Prerrequisitos_Instalacion_Entorno_Windows.docx`: instalación de Java, Gradle, Git, IntelliJ y Chrome, y del navegador de Playwright.
 - `Clase4_Guia_Estudio_Playwright_POM.docx`: guía para estudiar antes y después de la clase.
 - `Clase4_Presentacion_Playwright_POM.pptx`: presentación de la clase.
 - `Clase4_Actividad_Playwright_POM.docx`: actividad, rúbrica y forma de entrega.
