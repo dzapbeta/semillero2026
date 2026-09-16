@@ -100,6 +100,14 @@ login.iniciarSesion("locked_out_user", "secret_sauce");
 assertEquals("Epic sadface: Sorry, this user has been locked out.", login.mensajeDeError());
 ```
 
+### JUnit: cómo se escribe una prueba
+
+Las pruebas de este proyecto se escriben con JUnit, la librería de pruebas más usada en Java. Una prueba es un método normal con anotaciones encima (las marcas que empiezan con `@`):
+
+- `@Test` le dice a JUnit que ese método es una prueba. Sin esa marca, `gradle test` no lo corre.
+- `@DisplayName("...")` es el nombre que ves en la consola.
+- `assertEquals(esperado, real)` compara dos valores. Si son iguales la prueba termina en PASSED; si no, sale FAILED con el mensaje `expected: <esperado> but was: <real>`. Primero va lo que esperas y después lo que salió.
+
 ### El ciclo de vida de las pruebas
 
 `BaseTest` es la clase padre de las pruebas. Se encarga del navegador para que `LoginTest` solo tenga pasos y validaciones:
