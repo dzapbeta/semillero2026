@@ -17,7 +17,7 @@ El proyecto tiene 6 pruebas (escenarios) que salen de solo dos archivos `.featur
 
 ## Requisitos
 
-Antes de empezar necesitas tener instalado el JDK 21 (Eclipse Temurin), Gradle 9.7.1, Git e IntelliJ IDEA Community. La instalación paso a paso en Windows está en la guía `Prerrequisitos_Instalacion_Entorno_Windows.docx`, que está en la carpeta `material-de-apoyo/` de esta rama (también la encuentras en la rama `main`).
+Antes de empezar necesitas tener instalado el JDK 21 (Eclipse Temurin), Gradle 9.7.1, Git e IntelliJ IDEA. La instalación paso a paso en Windows está en la guía `Prerrequisitos_Instalacion_Entorno_Windows.docx`, que está en la carpeta `material-de-apoyo/` de esta rama (también la encuentras en la rama `main`).
 
 También necesitas internet, porque las pruebas llaman a dummyjson.com.
 
