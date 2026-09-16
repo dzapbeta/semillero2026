@@ -1,22 +1,16 @@
-# Compilación (Gradle)
-build/
-.gradle/
-bin/
-out/
 # IDEs
 .idea/
-*.iml
-.vscode/
-.classpath
-.project
-.settings/
+.vscode/*
+!.vscode/extensions.json
 # Sistema operativo
 .DS_Store
 # Archivos temporales de Office
 ~$*
-# Playwright
+# Playwright y Node.js
+node_modules/
 test-results/
 playwright-report/
+blob-report/
 traces/
 # Logs
 *.log

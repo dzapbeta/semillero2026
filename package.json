@@ -1,0 +1,19 @@
+{
+  "name": "semillero-clase4-playwright-pom",
+  "version": "1.0.0",
+  "description": "Clase 4 del Semillero QA 2026: Playwright con TypeScript y Page Object Model sobre saucedemo.com",
+  "private": true,
+  "scripts": {
+    "test": "playwright test",
+    "test:visible": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "reporte": "playwright show-report",
+    "instalar:navegador": "node --use-system-ca node_modules/@playwright/test/cli.js install chromium",
+    "revisar:tipos": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@types/node": "24.13.5",
+    "typescript": "6.0.3"
+  }
+}

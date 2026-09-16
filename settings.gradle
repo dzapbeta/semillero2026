@@ -1,2 +1,0 @@
-// Nombre del proyecto. Es el que muestra Gradle cuando lo ejecutas.
-rootProject.name = 'playwright-pom'
