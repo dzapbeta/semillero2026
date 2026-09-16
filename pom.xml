@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  pom.xml: archivo de configuración de Maven.
+  Aquí se declara QUÉ librerías usa el proyecto (dependencias), CON QUÉ versión de Java se compila
+  y CÓMO se ejecutan las pruebas y se genera el reporte de Serenity.
+  Comando principal: mvn clean verify  (compila, ejecuta todas las pruebas y genera el reporte).
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Identificación del proyecto (grupo, nombre y versión) -->
+    <groupId>co.com.semillero.certificacion</groupId>
+    <artifactId>dummyjson-screenplay-api</artifactId>
+    <version>1.0.0</version>
+    <name>Semillero QA 2026 - Clase 3 - Screenplay API + Data Driven</name>
+
+    <!-- Propiedades: valores reutilizables (versiones y codificación) en un solo lugar -->
+    <properties>
+        <!-- Compila para Java 17 (funciona también con JDK 21 instalado) -->
+        <maven.compiler.release>17</maven.compiler.release>
+        <!-- Todo el proyecto en UTF-8 para que tildes y eñes no se dañen -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!-- Versión de Serenity BDD (núcleo, Cucumber, REST y plugin de reportes deben ser la misma) -->
+        <serenity.version>5.3.11</serenity.version>
+        <!-- Versión de Cucumber alineada con la que usa Serenity 5.3.11 -->
+        <cucumber.version>7.34.2</cucumber.version>
+        <!-- Versión de JUnit Platform (JUnit 6) alineada con la que usa Serenity 5.3.11 -->
+        <junit.version>6.0.3</junit.version>
+        <!-- Versión de los plugins que ejecutan las pruebas -->
+        <failsafe.version>3.5.4</failsafe.version>
+        <!-- Tags vacíos por defecto: el reporte muestra todo; se puede filtrar con -Dtags=... -->
+        <tags></tags>
+    </properties>
+
+    <!-- Gestión de versiones: el BOM de JUnit obliga a que TODAS las piezas de JUnit Platform tengan la misma versión.
+         Sin esto, Cucumber trae una versión vieja (1.14.x) y la ejecución falla con NoClassDefFoundError. -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!-- Dependencias: librerías que descarga Maven -->
+    <dependencies>
+        <!-- Núcleo de Serenity BDD: actores, Screenplay, reportes -->
+        <dependency>
+            <groupId>net.serenity-bdd</groupId>
+            <artifactId>serenity-core</artifactId>
+            <version>${serenity.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- Integración de Serenity con Cucumber (lee los .feature y alimenta el reporte) -->
+        <dependency>
+            <groupId>net.serenity-bdd</groupId>
+            <artifactId>serenity-cucumber</artifactId>
+            <version>${serenity.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Screenplay para API: habilidad CallAnApi e interacciones Get, Post, etc. (usa Rest Assured) -->
+        <dependency>
+            <groupId>net.serenity-bdd</groupId>
+            <artifactId>serenity-screenplay-rest</artifactId>
+            <version>${serenity.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- Motor de Cucumber para JUnit Platform (el runner moderno recomendado por Serenity 5) -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit-platform-engine</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- @Suite de JUnit Platform: permite declarar el runner como una clase -->
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- Jackson: convierte JSON en objetos Java (modelos) y objetos en JSON. Lo usamos con @JsonProperty.
+             Serenity ya lo trae, pero se declara explícito porque NUESTRO código lo importa directamente. -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.21.3</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- Hamcrest: comparadores (equalTo, notNullValue...) usados en las validaciones -->
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
+            <version>3.0</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Compilador de Java: usa la propiedad maven.compiler.release (17) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.14.1</version>
+            </plugin>
+            <!-- Surefire se desactiva: las pruebas las ejecuta Failsafe (así el reporte se genera aunque falle alguna) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${failsafe.version}</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <!-- Failsafe: ejecuta los runners (*Test.java) en la fase integration-test y falla el build en verify -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${failsafe.version}</version>
+                <configuration>
+                    <!-- Fuerza UTF-8 en la JVM de las pruebas (tildes en features, CSV y reporte) -->
+                    <argLine>-Dfile.encoding=UTF-8</argLine>
+                    <includes>
+                        <include>**/runners/*Test.java</include>
+                    </includes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Plugin de Serenity: después de las pruebas arma el reporte HTML en target/site/serenity -->
+            <plugin>
+                <groupId>net.serenity-bdd.maven.plugins</groupId>
+                <artifactId>serenity-maven-plugin</artifactId>
+                <version>${serenity.version}</version>
+                <configuration>
+                    <tags>${tags}</tags>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>serenity-reports</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>aggregate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
