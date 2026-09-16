@@ -1,0 +1,2 @@
+// Nombre del proyecto. Es el que muestra Gradle y IntelliJ al abrirlo.
+rootProject.name = 'screenplay-api-datadriven'

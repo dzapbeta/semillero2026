@@ -1,0 +1,67 @@
+// Plugins: 'java' compila y ejecuta las pruebas; el de Serenity arma el reporte HTML al final.
+plugins {
+    id 'java'
+    id 'net.serenity-bdd.serenity-gradle-plugin' version '5.3.9'
+}
+
+// Grupo y versión del proyecto. Solo sirven para identificarlo.
+group = 'co.com.semillero'
+version = '1.0.0'
+
+// Versión de Java con la que se compila. Ustedes instalan el JDK 21.
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+// Todo el código se lee en UTF-8 para que las tildes no se dañen en Windows.
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+// De dónde se descargan las librerías.
+repositories {
+    mavenCentral()
+}
+
+// Versiones en un solo lugar. Serenity y Cucumber deben ir con estas versiones juntas.
+def versionSerenity = '5.3.11'
+def versionCucumber = '7.34.2'
+
+// Librerías que usa el proyecto.
+dependencies {
+    // El BOM de JUnit pone la misma versión a todas las piezas de JUnit. Sin esto chocan versiones.
+    testImplementation platform('org.junit:junit-bom:6.0.3')
+
+    // Serenity con Screenplay y la parte de API (Get, Post y la habilidad CallAnApi).
+    implementation "net.serenity-bdd:serenity-core:${versionSerenity}"
+    implementation "net.serenity-bdd:serenity-screenplay-rest:${versionSerenity}"
+
+    // Cucumber conectado a Serenity y a JUnit, para leer los archivos .feature.
+    testImplementation "net.serenity-bdd:serenity-cucumber:${versionSerenity}"
+    testImplementation "io.cucumber:cucumber-junit-platform-engine:${versionCucumber}"
+    testImplementation 'org.junit.platform:junit-platform-suite'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+// Configuración de las pruebas.
+test {
+    // Usa JUnit Platform, que es donde corre Cucumber.
+    useJUnitPlatform()
+    // Tildes bien leídas en los features y en el CSV.
+    systemProperty 'file.encoding', 'UTF-8'
+    // Permite filtrar por tag: gradle clean test "-Ptags=@login"
+    if (project.hasProperty('tags')) {
+        systemProperty 'cucumber.filter.tags', project.property('tags')
+    }
+    // Muestra en consola cada escenario que pasa, falla o se salta, y el mensaje si falla.
+    testLogging {
+        events = ['passed', 'failed', 'skipped']
+        exceptionFormat = 'full'
+        showStackTraces = false
+    }
+    // Siempre vuelve a ejecutar las pruebas, aunque no hayas cambiado nada.
+    outputs.upToDateWhen { false }
+    // Al terminar las pruebas (pasen o fallen) genera el reporte de Serenity.
+    finalizedBy 'aggregate'
+}
