@@ -24,7 +24,7 @@ Herramientas y versiones que usa:
 | Serenity BDD | 5.3.11 |
 | Plugin de reporte `net.serenity-bdd.serenity-gradle-plugin` | 5.3.9 (la última publicada) |
 | Cucumber | 7.34.2 |
-| JUnit Platform | 6.0.3 |
+| JUnit Platform (el motor que ejecuta las pruebas en Java) | 6.0.3 |
 | Selenium | 4.46.0 (lo trae Serenity) |
 
 ## Requisitos
@@ -52,7 +52,7 @@ Abre PowerShell y sigue estos pasos.
    git switch 02-screenplay-serenity-cucumber-web
    ```
 
-3. Ejecuta los escenarios. Se abre Chrome y vas a ver cómo escribe el usuario y la clave:
+3. Ejecuta los escenarios. En la clase 1 usabas `gradle run` para correr un programa; aquí usamos `gradle clean test`, que ejecuta pruebas. Se abre Chrome y vas a ver cómo escribe el usuario y la clave:
 
    ```powershell
    gradle clean test
@@ -65,6 +65,8 @@ Abre PowerShell y sigue estos pasos.
    SauceDemoRunner > Inicio de sesión en Sauce Demo > Usuario bloqueado PASSED
    BUILD SUCCESSFUL
    ```
+
+   `PASSED` quiere decir que el escenario pasó: lo que vio la prueba coincidió con lo esperado. Si algo no coincide, sale `FAILED` con el motivo.
 
 4. Abre el reporte de Serenity:
 
