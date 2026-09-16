@@ -1,5 +1,8 @@
-# Compilación Maven
-target/
+# Compilación (Gradle)
+build/
+.gradle/
+bin/
+out/
 # IDEs
 .idea/
 *.iml
