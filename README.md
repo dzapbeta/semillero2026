@@ -29,7 +29,7 @@ Herramientas y versiones que usa:
 
 ## Requisitos
 
-Necesitas JDK 21 (Eclipse Temurin), Gradle 9.7.1, Git, Google Chrome e IntelliJ IDEA Community con los plugins "Cucumber for Java" y "Gherkin". La instalación paso a paso está en `material-de-apoyo/Prerrequisitos_Instalacion_Entorno_Windows.docx`.
+Necesitas JDK 21 (Eclipse Temurin), Gradle 9.7.1, Git, Google Chrome e IntelliJ IDEA con los plugins "Cucumber for Java" y "Gherkin". La instalación paso a paso está en `material-de-apoyo/Prerrequisitos_Instalacion_Entorno_Windows.docx`.
 
 También necesitas internet: la primera vez Gradle descarga las librerías y las pruebas abren saucedemo.com. No tienes que descargar el chromedriver; Selenium lo baja solo.
 
