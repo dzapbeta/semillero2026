@@ -89,7 +89,7 @@ El comando del paso 5 depende de la rama, y el `README.md` de cada una lo explic
 | `01-fundamentos-java-poo` | `gradle run` (es Java puro, sin pruebas automatizadas) |
 | `02-screenplay-serenity-cucumber-web` | `gradle clean test` |
 | `03-screenplay-serenity-cucumber-api-datadriven` | `gradle clean test` |
-| `04-playwright-pom` | `npm ci` y `npx playwright install chromium` (una sola vez) y luego `npm test` |
+| `04-playwright-pom` | `npm ci` y `npm run instalar:navegador` (una sola vez); luego `npm test`, `npm run test:visible` (con el navegador a la vista) y `npm run reporte` |
 
 Para cambiar a otra clase repites el paso 4 con el nombre de su rama. Si ya tenías el repositorio clonado
 y quieres traer lo último que yo haya publicado, entra a la rama y escribe `git pull`.
@@ -116,10 +116,11 @@ La rama 04 es un proyecto de Node.js con TypeScript, así que en vez de `build.g
 
 ```
 semillero2026/
-├── package.json          librerías del proyecto y el comando npm test
+├── package.json          librerías del proyecto y los comandos (npm test, npm run instalar:navegador...)
 ├── package-lock.json     versiones exactas que instala npm ci
 ├── playwright.config.ts  configuración de Playwright
 ├── pages/                las páginas del patrón POM
+├── data/                 los datos de prueba (usuarios)
 └── tests/                las pruebas
 ```
 
