@@ -1,0 +1,10 @@
+// Plugins de Gradle: se descargan del Gradle Plugin Portal (el del reporte de Serenity vive allí).
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
+
+// Nombre del proyecto. Es el que muestra Gradle cuando lo ejecutas.
+rootProject.name = 'saucedemo-screenplay-web'

@@ -1,0 +1,69 @@
+// Plugins: 'java' compila y corre las pruebas; el de Serenity arma el reporte HTML al final.
+plugins {
+    id 'java'
+    id 'net.serenity-bdd.serenity-gradle-plugin' version '5.3.9'
+}
+
+// Grupo y versión del proyecto. Sirven para identificarlo, no cambian cómo funciona.
+group = 'co.com.semillero'
+version = '1.0'
+
+// Versión de Java con la que se compila. Usamos Java 21, la misma que instalas en tu equipo.
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+// De dónde descarga Gradle las librerías. Maven Central es el repositorio público más usado.
+repositories {
+    mavenCentral()
+}
+
+// Versiones en un solo lugar para no repetirlas en cada librería.
+def versionSerenity = '5.3.11'
+def versionCucumber = '7.34.2'
+def versionJunit = '6.0.3'
+
+// Librerías del proyecto.
+dependencies {
+    // Serenity con Screenplay para web: actores, tareas, preguntas y manejo del navegador.
+    implementation "net.serenity-bdd:serenity-core:${versionSerenity}"
+    implementation "net.serenity-bdd:serenity-screenplay:${versionSerenity}"
+    implementation "net.serenity-bdd:serenity-screenplay-webdriver:${versionSerenity}"
+    // Unión entre Serenity y Cucumber, para que los escenarios salgan en el reporte.
+    implementation "net.serenity-bdd:serenity-cucumber:${versionSerenity}"
+
+    // JUnit en una sola versión para todas sus piezas (así no se mezclan versiones).
+    testImplementation platform("org.junit:junit-bom:${versionJunit}")
+    // Motor de Cucumber: lee los archivos .feature y los ejecuta como pruebas.
+    testImplementation "io.cucumber:cucumber-junit-platform-engine:${versionCucumber}"
+    // Permite escribir la clase runner con @Suite.
+    testImplementation 'org.junit.platform:junit-platform-suite'
+    // Lanzador de JUnit que Gradle necesita para correr las pruebas.
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+// Lee y escribe los archivos en UTF-8 para que las tildes y la ñ se vean bien.
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+// Configuración de las pruebas.
+test {
+    // Las pruebas se corren con JUnit Platform (ahí vive el motor de Cucumber).
+    useJUnitPlatform()
+    // Si escribes -Dcucumber.filter.tags o -Dheadless.mode en la consola, se lo pasa a las pruebas.
+    if (System.getProperty('cucumber.filter.tags') != null) {
+        systemProperty 'cucumber.filter.tags', System.getProperty('cucumber.filter.tags')
+    }
+    if (System.getProperty('headless.mode') != null) {
+        systemProperty 'headless.mode', System.getProperty('headless.mode')
+    }
+    // Muestra en consola cada escenario que pasa o falla, con el error completo.
+    testLogging {
+        events 'passed', 'failed', 'skipped'
+        exceptionFormat = 'full'
+    }
+    // Al terminar las pruebas (pasen o fallen) genera el reporte de Serenity.
+    finalizedBy 'aggregate'
+}
