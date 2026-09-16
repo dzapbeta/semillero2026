@@ -1,0 +1,66 @@
+// Plugin 'java': compila el código y corre las pruebas.
+plugins {
+    id 'java'
+}
+
+// Grupo y versión del proyecto. Sirven para identificarlo, no cambian cómo funciona.
+group = 'co.com.semillero'
+version = '1.0'
+
+// Versión de Java con la que se compila. Usamos Java 21, la misma que instalas en tu equipo.
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+// De dónde descarga Gradle las librerías. Maven Central es el repositorio público más usado.
+repositories {
+    mavenCentral()
+}
+
+// Librerías del proyecto: Playwright para manejar el navegador y JUnit 5 para escribir las pruebas.
+dependencies {
+    implementation 'com.microsoft.playwright:playwright:1.63.0'
+    testImplementation platform('org.junit:junit-bom:5.14.4')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+// Lee y escribe los archivos en UTF-8 para que las tildes y la ñ se vean bien.
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+// Configuración de "gradle test".
+test {
+    // Las pruebas son de JUnit 5.
+    useJUnitPlatform()
+
+    // Pasa -Dheadless a las pruebas. Si no lo escribes vale true y el navegador trabaja sin ventana.
+    // Con "gradle test -Dheadless=false" ves el navegador abrirse.
+    systemProperty 'headless', System.getProperty('headless', 'true')
+
+    // Evita que Playwright descargue solo los tres navegadores al arrancar.
+    // El navegador se instala una vez con "gradle instalarNavegadores".
+    environment 'PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD', '1'
+
+    // Las pruebas visitan una página real, así que se vuelven a correr siempre, aunque no cambies código.
+    outputs.upToDateWhen { false }
+
+    // Muestra en consola cada prueba que corre y, si falla, el error completo.
+    testLogging {
+        events 'passed', 'failed', 'skipped'
+        exceptionFormat = 'full'
+    }
+}
+
+// Tarea "gradle instalarNavegadores": descarga Chromium para Playwright. Se ejecuta una sola vez por equipo.
+tasks.register('instalarNavegadores', JavaExec) {
+    group = 'playwright'
+    description = 'Instala el navegador Chromium que usa Playwright.'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.microsoft.playwright.CLI'
+    args 'install', 'chromium'
+    // Usa los certificados de Windows o macOS al descargar. Sin esto la descarga falla detrás del proxy de la empresa.
+    environment 'NODE_OPTIONS', '--use-system-ca'
+}
