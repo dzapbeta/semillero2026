@@ -2,7 +2,8 @@
 
 Proyecto de la primera clase del módulo de Automatización Web del Semillero QA 2026. Aquí están los ejemplos
 que vemos el lunes 21 de septiembre de 2026 (9:00 a.m. a 12:00 m.): variables, tipos de datos, `if`, `switch`,
-ciclos, clases y objetos, encapsulamiento, herencia y polimorfismo. Cada ejemplo tiene pruebas con JUnit 5.
+ciclos, clases y objetos, encapsulamiento, herencia y polimorfismo. Todo es Java puro y se ejecuta con un solo
+comando: `gradle run`.
 
 No necesitas saber programar para usarlo. La idea es que lo ejecutes, leas el código (tiene un comentario encima
 de cada cosa) y cambies valores para ver qué pasa.
@@ -41,25 +42,17 @@ El primero debe mostrar la versión 21 y el segundo `Gradle 9.7.1`.
    git switch 01-fundamentos-java-poo
    ```
 
-3. Corre las pruebas. La primera vez tarda un poco más porque Gradle descarga JUnit:
-
-   ```powershell
-   gradle test
-   ```
-
-   Vas a ver cada prueba con su nombre y la palabra `PASSED`. Al final debe decir `BUILD SUCCESSFUL`.
-   Son 14 pruebas.
-
-4. Corre los ejemplos:
+3. Ejecuta el proyecto:
 
    ```powershell
    gradle run
    ```
 
-   En la consola aparece cada tema con un título, por ejemplo `===== 1. Variables y tipos de datos =====`.
+   En la consola aparece cada tema con un título, por ejemplo `===== 1. Variables y tipos de datos =====`,
+   y debajo lo que imprime ese ejemplo. Al final debe decir `BUILD SUCCESSFUL`.
 
-Si quieres ver el reporte de pruebas en el navegador, después de `gradle test` abre
-`build\reports\tests\test\index.html`.
+Ese es el único comando que necesitas en esta clase. La consola es donde compruebas que todo funciona: si
+cambias un valor en el código y vuelves a correr `gradle run`, ves el cambio ahí mismo.
 
 ## Cómo funciona
 
@@ -68,39 +61,63 @@ mismo orden de la clase:
 
 1. `Variables` crea un dato de cada tipo (`int`, `double`, `boolean`, `char`, `String`), hace una suma y pega dos textos.
 2. `Condicionales` decide si una nota aprueba (con `if/else`) y qué hacer según el color del semáforo (con `switch`).
+   `App` lo usa con tres notas y tres colores, uno que no existe.
 3. `Ciclos` cuenta de 1 a 5 con `for`, simula tres intentos de login con `while` y saluda a una lista de nombres con `for-each`.
 4. `Estudiante` muestra una clase y dos objetos creados con `new`.
 5. `CuentaBancaria` guarda el saldo como privado. Solo cambia con `depositar()` y `retirar()`, y nunca queda negativo.
+   En consola ves cómo se rechazan un depósito negativo y un retiro mayor al saldo.
 6. `Animal` es la clase padre. `Perro` y `Gato` heredan de ella y cada uno cambia `hacerSonido()`. En `App`
    se recorre una lista de `Animal` y cada objeto responde con su propio sonido: eso es polimorfismo.
 
-Las pruebas están en `src/test` y revisan `Condicionales`, `CuentaBancaria` y los animales. Cada una tiene un
-`@DisplayName` en español que dice qué revisa.
+## Cómo leer un error de Java
+
+Si escribes algo mal, Java no compila, no se ejecuta ningún ejemplo y la consola dice `BUILD FAILED`. Arriba de
+eso está el mensaje que importa. Por ejemplo, si borras el punto y coma de `int edad = 20;` en `Variables.java`:
+
+```
+> Task :compileJava FAILED
+...\variables\Variables.java:9: error: ';' expected
+        int edad = 20
+                     ^
+1 error
+```
+
+Léelo así: primero el archivo y la línea (`Variables.java:9`), después qué pasó (`';' expected`, faltó un punto
+y coma) y abajo la línea con un `^` que señala el sitio exacto.
+
+Otro error que vas a ver en clase aparece si en `App.java` intentas escribir `cuenta.saldo = -500;`:
+
+```
+> Task :compileJava FAILED
+...\App.java:66: error: saldo has private access in CuentaBancaria
+        cuenta.saldo = -500;
+              ^
+1 error
+```
+
+Dice que `saldo` es privado dentro de `CuentaBancaria`. Es el encapsulamiento haciendo su trabajo: el saldo solo
+se cambia con `depositar()` o `retirar()`.
 
 ## Estructura de carpetas
 
 ```
 01-fundamentos-java-poo/
-├── build.gradle            configuración de Gradle: plugins, Java 21, JUnit 5 y clase principal
+├── build.gradle            configuración de Gradle: plugins, Java 21 y clase principal
 ├── settings.gradle         nombre del proyecto
-├── material-de-apoyo/      guía de estudio, presentación y actividad de la clase
+├── material-de-apoyo/      prerrequisitos, guía de estudio, presentación y actividad
 └── src/
-    ├── main/java/co/com/semillero/
-    │   ├── App.java                    ejecuta todos los ejemplos en orden
-    │   ├── variables/Variables.java    tipos de datos
-    │   ├── control/Condicionales.java  if/else y switch
-    │   ├── control/Ciclos.java         for, while y for-each
-    │   ├── poo/Estudiante.java         clase, objeto y constructor
-    │   ├── poo/CuentaBancaria.java     encapsulamiento
-    │   └── herencia/                   Animal (padre), Perro y Gato (hijas)
-    └── test/java/co/com/semillero/
-        ├── control/CondicionalesTest.java
-        ├── poo/CuentaBancariaTest.java
-        └── herencia/AnimalTest.java
+    └── main/java/co/com/semillero/
+        ├── App.java                    ejecuta todos los ejemplos en orden
+        ├── variables/Variables.java    tipos de datos
+        ├── control/Condicionales.java  if/else y switch
+        ├── control/Ciclos.java         for, while y for-each
+        ├── poo/Estudiante.java         clase, objeto y constructor
+        ├── poo/CuentaBancaria.java     encapsulamiento
+        └── herencia/                   Animal (padre), Perro y Gato (hijas)
 ```
 
-`src/main` es el código del programa y `src/test` son las pruebas. Gradle crea una carpeta `build` cuando
-compilas; no se sube a Git.
+Cada carpeta dentro de `semillero` es un paquete, una forma de agrupar clases del mismo tema. Gradle crea una
+carpeta `build` cuando compilas; no se sube a Git.
 
 ## Problemas comunes
 
@@ -117,9 +134,6 @@ su carpeta `bin`. Corrígela, reinicia PowerShell y prueba con `echo $env:JAVA_H
 
 **Salen símbolos raros en vez de tildes en la consola.** Pasa en algunas consolas de Windows. Por eso los textos
 que imprime el proyecto no llevan tildes. En los comentarios y el código sí se pueden usar.
-
-**La primera ejecución falla con `Could not resolve`.** Gradle no pudo descargar JUnit, casi siempre por la red
-o el proxy. Intenta desde otra red una vez; después queda guardado en tu equipo.
 
 ## Material de apoyo
 
