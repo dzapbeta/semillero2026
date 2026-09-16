@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  pom.xml — "Receta" de Maven del proyecto de la clase 4 (Playwright + POM).
+  Aquí se declara: qué versión de Java se usa, qué librerías (dependencias) se descargan
+  y qué plugins ejecutan las pruebas. Maven lee este archivo cuando corres `mvn clean test`.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <!-- Versión del modelo de POM que entiende Maven (siempre 4.0.0). -->
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Coordenadas del proyecto: grupo (empresa/equipo), nombre del artefacto y versión. -->
+    <groupId>co.com.semillero</groupId>
+    <artifactId>semillero-playwright-pom</artifactId>
+    <version>1.0.0</version>
+    <!-- Nombre y descripción legibles del proyecto. -->
+    <name>Semillero QA 2026 - Clase 4 - Playwright con POM</name>
+    <description>Pruebas web de saucedemo.com con Playwright para Java, JUnit y Page Object Model.</description>
+
+    <!-- Propiedades: valores reutilizables dentro del POM (versiones, codificación, Java). -->
+    <properties>
+        <!-- Compila para Java 17: el mínimo del semillero (funciona también con JDK 21). -->
+        <maven.compiler.release>17</maven.compiler.release>
+        <!-- Codificación UTF-8 para que las tildes y la ñ se lean bien en código y reportes. -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!-- Versión de Playwright para Java (controla el navegador). -->
+        <playwright.version>1.63.0</playwright.version>
+        <!-- Versión de JUnit (motor Jupiter: @Test, @BeforeEach, @ParameterizedTest...). -->
+        <junit.version>6.1.3</junit.version>
+        <!-- Versiones de los plugins de Maven. -->
+        <surefire.version>3.6.0</surefire.version>
+        <compiler.version>3.15.0</compiler.version>
+        <exec.plugin.version>3.6.4</exec.plugin.version>
+    </properties>
+
+    <!-- dependencyManagement: importa el "BOM" de JUnit para alinear las versiones de todos sus módulos. -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!-- Dependencias: librerías que Maven descarga y pone a disposición del código. -->
+    <dependencies>
+        <!-- Playwright para Java. Scope compile porque las páginas (src/main) usan Page y Locator. -->
+        <dependency>
+            <groupId>com.microsoft.playwright</groupId>
+            <artifactId>playwright</artifactId>
+            <version>${playwright.version}</version>
+        </dependency>
+        <!-- JUnit Jupiter: anotaciones y motor para escribir y ejecutar las pruebas. Solo para pruebas. -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- JUnit Params: @ParameterizedTest, @CsvSource y @CsvFileSource (data driven). -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- build: cómo se compila y se ejecuta el proyecto. -->
+    <build>
+        <plugins>
+            <!-- Compilador de Java: toma maven.compiler.release (17). -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler.version}</version>
+            </plugin>
+
+            <!-- Surefire: ejecuta las pruebas JUnit en `mvn test`.
+                 Filtra por etiqueta con -Dgroups=login y deja reportes en target/surefire-reports. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${surefire.version}</version>
+                <configuration>
+                    <!-- Muestra en consola el @DisplayName de cada prueba en lugar del nombre del método. -->
+                    <statelessTestsetReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5Xml30StatelessReporter">
+                        <usePhrasedTestCaseMethodName>true</usePhrasedTestCaseMethodName>
+                    </statelessTestsetReporter>
+                    <consoleOutputReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5ConsoleOutputReporter">
+                        <usePhrasedFileName>true</usePhrasedFileName>
+                    </consoleOutputReporter>
+                    <statelessTestsetInfoReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5StatelessTestsetInfoReporter">
+                        <usePhrasedClassNameInRunning>true</usePhrasedClassNameInRunning>
+                        <usePhrasedClassNameInTestCaseSummary>true</usePhrasedClassNameInTestCaseSummary>
+                    </statelessTestsetInfoReporter>
+                </configuration>
+            </plugin>
+
+            <!-- Exec: permite usar la consola (CLI) de Playwright desde Maven, por ejemplo:
+                 mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install chromium"
+                 mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="show-trace target/trazas/archivo.zip" -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>${exec.plugin.version}</version>
+                <configuration>
+                    <!-- Clase principal por defecto: la CLI de Playwright (así -Dexec.mainClass es opcional). -->
+                    <mainClass>com.microsoft.playwright.CLI</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
