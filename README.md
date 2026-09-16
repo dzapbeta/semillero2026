@@ -178,9 +178,9 @@ Estas carpetas no se suben a Git y se crean solas: `node_modules` (librerías), 
 
 | | Screenplay (clase 2) | POM (esta clase) |
 |---|---|---|
-| Quién hace las acciones | Un actor que ejecuta tareas (Task) | La página, con sus métodos |
-| Dónde están los localizadores | En las clases de `userinterfaces` | Dentro de cada página |
-| Cómo se valida | Con preguntas (Question) | La prueba revisa un localizador de la página con `expect` |
+| Quién hace las acciones | Un actor que ejecuta tareas (`tasks/IniciarSesion`) | La página, con sus métodos |
+| Dónde están los localizadores | En `userinterfaces/PaginaLogin` | Dentro de cada página |
+| Cómo se valida | Con preguntas (`questions/MensajeDeError`) | La prueba revisa un localizador de la página con `expect` |
 | Cantidad de clases | Más clases, cada una pequeña | Pocas: una por pantalla |
 | Cuándo conviene | Proyectos grandes con muchos flujos que se combinan | Proyectos pequeños o medianos, y para empezar |
 
