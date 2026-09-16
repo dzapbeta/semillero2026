@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  pom.xml: es la "receta" del proyecto para Maven.
+  Aquí se declara QUÉ librerías usa el proyecto (dependencias), CON QUÉ versión de Java
+  se compila y CÓMO se ejecutan las pruebas y se genera el reporte (plugins).
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <!-- Versión del formato del pom (siempre 4.0.0 en Maven 3). -->
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Identidad del proyecto: grupo (organización), nombre del artefacto y versión. -->
+    <groupId>co.com.semillero.certificacion</groupId>
+    <artifactId>saucedemo-screenplay-web</artifactId>
+    <version>1.0.0</version>
+    <!-- jar: el proyecto se empaqueta como una librería Java normal. -->
+    <packaging>jar</packaging>
+
+    <!-- Nombre legible que aparece en la consola de Maven. -->
+    <name>Semillero QA 2026 - Clase 2 - Screenplay Web con Serenity BDD y Cucumber</name>
+
+    <!--
+      Propiedades: variables reutilizables. Centralizar las versiones aquí evita
+      repetirlas y que queden distintas en varios lugares.
+    -->
+    <properties>
+        <!-- Versión de Java con la que se compila (17 funciona con JDK 17, 21 o superior). -->
+        <maven.compiler.release>17</maven.compiler.release>
+        <!-- Codificación UTF-8 para que las tildes y la ñ de los features y del código no se dañen. -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Codificación de los reportes de Maven. -->
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!-- Versión de Serenity BDD (framework que integra Selenium, Screenplay y reportes). -->
+        <serenity.version>5.3.11</serenity.version>
+        <!-- Versión de Cucumber (lee los archivos .feature escritos en Gherkin). -->
+        <cucumber.version>7.34.2</cucumber.version>
+        <!-- Versión de JUnit Platform (motor que descubre y lanza las pruebas). -->
+        <junit.platform.version>6.0.3</junit.platform.version>
+        <!-- Versión de Logback (controla qué mensajes de log se ven en consola). -->
+        <logback.version>1.5.38</logback.version>
+    </properties>
+
+    <!--
+      dependencyManagement: fija versiones SIN agregar librerías. Se importa el "BOM" de JUnit
+      para que todas las piezas de JUnit Platform queden en la misma versión (6.0.3), que es
+      la misma con la que está construido Serenity 5.3.11. Sin esto, Cucumber trae una versión
+      más vieja (1.14.x) y se mezclan versiones incompatibles.
+    -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- BOM de JUnit: lista oficial de versiones compatibles entre sí. -->
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit.platform.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!-- Dependencias: librerías que Maven descarga de internet (Maven Central). -->
+    <dependencies>
+        <!-- Núcleo de Serenity BDD: maneja el navegador (WebDriver), capturas y datos del reporte. -->
+        <dependency>
+            <groupId>net.serenity-bdd</groupId>
+            <artifactId>serenity-core</artifactId>
+            <version>${serenity.version}</version>
+        </dependency>
+        <!-- Patrón Screenplay: Actor, Task, Interaction, Question. -->
+        <dependency>
+            <groupId>net.serenity-bdd</groupId>
+            <artifactId>serenity-screenplay</artifactId>
+            <version>${serenity.version}</version>
+        </dependency>
+        <!-- Screenplay para web: habilidad BrowseTheWeb, Target, Click, Enter, Text, etc. -->
+        <dependency>
+            <groupId>net.serenity-bdd</groupId>
+            <artifactId>serenity-screenplay-webdriver</artifactId>
+            <version>${serenity.version}</version>
+        </dependency>
+        <!-- Integración de Serenity con Cucumber (conecta los .feature con el reporte de Serenity). -->
+        <dependency>
+            <groupId>net.serenity-bdd</groupId>
+            <artifactId>serenity-cucumber</artifactId>
+            <version>${serenity.version}</version>
+        </dependency>
+        <!-- Motor de Cucumber para JUnit Platform: permite ejecutar los .feature como pruebas. -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit-platform-engine</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Soporte de @Suite: la clase runner le dice a JUnit qué features ejecutar. -->
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- Logback: implementación de logs; se configura en src/test/resources/logback-test.xml. -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- Build: cómo se compila, se ejecutan las pruebas y se genera el reporte. -->
+    <build>
+        <plugins>
+            <!-- Compilador de Java: usa la propiedad maven.compiler.release (17). -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.14.1</version>
+            </plugin>
+
+            <!--
+              Surefire ejecuta pruebas unitarias en la fase "test". Aquí NO hay pruebas unitarias,
+              así que se desactiva para que los escenarios no se ejecuten dos veces.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.6</version>
+                <configuration>
+                    <!-- skip=true: Surefire no ejecuta nada. -->
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+
+            <!--
+              Failsafe ejecuta las pruebas de integración (nuestros escenarios web) en la fase
+              "integration-test" y, en la fase "verify", hace fallar el build si algo falló.
+              Se usa Failsafe porque así el reporte de Serenity se genera ANTES de que el build falle.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>3.5.6</version>
+                <configuration>
+                    <!-- Solo se ejecutan las clases runner (terminan en "Runner" dentro del paquete runners). -->
+                    <includes>
+                        <include>**/runners/*Runner.java</include>
+                    </includes>
+                </configuration>
+                <executions>
+                    <!-- Enlaza Failsafe a las fases de Maven: ejecutar escenarios y luego verificar resultados. -->
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--
+              Plugin de Serenity: en la fase "post-integration-test" junta los resultados
+              y genera el reporte HTML en target/site/serenity/index.html.
+            -->
+            <plugin>
+                <groupId>net.serenity-bdd.maven.plugins</groupId>
+                <artifactId>serenity-maven-plugin</artifactId>
+                <version>${serenity.version}</version>
+                <executions>
+                    <!-- aggregate: construye el reporte completo con todos los escenarios ejecutados. -->
+                    <execution>
+                        <id>serenity-reports</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>aggregate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

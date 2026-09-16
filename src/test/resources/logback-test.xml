@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- logback-test.xml: controla cuántos mensajes técnicos (logs) se muestran en la consola. -->
+<configuration>
+    <!-- Appender CONSOLA: escribe los mensajes en la terminal con hora, nivel y texto. -->
+    <appender name="CONSOLA" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- Formato de cada línea de log. -->
+        <encoder>
+            <pattern>%d{HH:mm:ss} %-5level %logger{20} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <!-- Serenity en nivel INFO: muestra el avance de los escenarios. -->
+    <logger name="net.serenitybdd" level="INFO"/>
+    <!-- Selenium y librerías de red en WARN: solo avisos y errores (evita ruido). -->
+    <logger name="org.openqa.selenium" level="WARN"/>
+    <!-- Nivel por defecto para todo lo demás. -->
+    <root level="WARN">
+        <appender-ref ref="CONSOLA"/>
+    </root>
+</configuration>
