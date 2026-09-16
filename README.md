@@ -73,9 +73,18 @@ git branch -a
 # 4. Pasarte a la rama de la clase que vas a trabajar
 git switch 01-fundamentos-java-poo
 
-# 5. Ejecutar las pruebas de esa rama
-gradle test
+# 5. Ejecutar el proyecto de esa rama (en la rama 01)
+gradle run
 ```
+
+El comando del paso 5 depende de la rama, y el `README.md` de cada una lo explica:
+
+| Rama | Comando |
+|---|---|
+| `01-fundamentos-java-poo` | `gradle run` (es Java puro, sin pruebas automatizadas) |
+| `02-screenplay-serenity-cucumber-web` | `gradle clean test` |
+| `03-screenplay-serenity-cucumber-api-datadriven` | `gradle clean test` |
+| `04-playwright-pom` | `gradle instalarNavegadores` (una sola vez) y luego `gradle test` |
 
 Para cambiar a otra clase repites el paso 4 con el nombre de su rama. Si ya tenías el repositorio clonado
 y quieres traer lo último que yo haya publicado, entra a la rama y escribe `git pull`.
@@ -89,7 +98,7 @@ semillero2026/
 ├── README.md             qué es el proyecto, cómo se ejecuta y cómo está organizado
 ├── build.gradle          dependencias y configuración de Gradle
 ├── settings.gradle       nombre del proyecto
-├── src/                  código del proyecto y sus pruebas
+├── src/                  código del proyecto (y sus pruebas desde la clase 2)
 └── material-de-apoyo/
     ├── ClaseN_Guia_Estudio_<Tema>.docx               para estudiar antes y después de la clase
     ├── ClaseN_Presentacion_<Tema>.pptx               la presentación de la clase
