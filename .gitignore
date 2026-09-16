@@ -1,0 +1,19 @@
+# Compilación Maven
+target/
+# IDEs
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+# Sistema operativo
+.DS_Store
+# Archivos temporales de Office
+~$*
+# Playwright
+test-results/
+playwright-report/
+traces/
+# Logs
+*.log
