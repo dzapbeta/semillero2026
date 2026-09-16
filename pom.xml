@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  pom.xml (Project Object Model): es la "hoja de vida" del proyecto para Maven.
+  Aquí se declara quiénes somos (groupId/artifactId/version), qué versión de Java usamos,
+  qué librerías necesitamos (dependencias) y qué herramientas corren al compilar y probar (plugins).
+  Clase 1 · Semillero QA 2026 · Fundamentos de Java y POO para automatización.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <!-- Versión del formato del POM. Siempre es 4.0.0 en Maven 3. -->
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Identidad del proyecto: organización (groupId), nombre (artifactId) y versión. -->
+    <groupId>co.com.semillero</groupId>
+    <artifactId>fundamentos-java-poo</artifactId>
+    <version>1.0.0</version>
+    <!-- jar: el resultado de empaquetar es un archivo .jar con las clases compiladas. -->
+    <packaging>jar</packaging>
+
+    <!-- Nombre y descripción legibles (aparecen en los logs de Maven). -->
+    <name>Clase 1 - Fundamentos de Java y POO</name>
+    <description>Proyecto base de la clase 1 del Semillero QA 2026: variables, control de flujo, colecciones y POO con dominio de pruebas.</description>
+
+    <!-- Propiedades: valores reutilizables. Cambiar una versión aquí la cambia en todo el POM. -->
+    <properties>
+        <!-- Compila para Java 17: funciona en cualquier JDK 17 o superior (17, 21...). -->
+        <maven.compiler.release>17</maven.compiler.release>
+        <!-- Codificación de los archivos fuente: evita que las tildes y la ñ salgan dañadas. -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Codificación de los reportes que genera Maven. -->
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!-- Versiones de librerías y plugins (todas estables, ninguna milestone). -->
+        <junit.version>5.14.4</junit.version>
+        <assertj.version>3.27.7</assertj.version>
+        <compiler.plugin.version>3.16.0</compiler.plugin.version>
+        <surefire.plugin.version>3.6.0</surefire.plugin.version>
+        <exec.plugin.version>3.6.4</exec.plugin.version>
+        <!-- Clase con el método main que ejecuta la demo (usada por exec-maven-plugin). -->
+        <exec.mainClass>co.com.semillero.fundamentos.App</exec.mainClass>
+    </properties>
+
+    <!--
+      dependencyManagement + BOM (Bill Of Materials) de JUnit: fija en un solo lugar la versión
+      de todos los módulos de JUnit para que no se mezclen versiones incompatibles.
+    -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <!--
+          JUnit Jupiter (JUnit 5): el framework con el que escribimos y ejecutamos las pruebas
+          (@Test, @DisplayName, @BeforeEach...). scope test = solo existe en src/test, no en el código de la app.
+          No lleva <version> porque la toma del BOM de arriba.
+        -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!--
+          AssertJ: librería de aserciones "fluidas" que se leen casi como una frase:
+          assertThat(caso.getEstado()).isEqualTo(EstadoCaso.EXITOSO). También solo para pruebas.
+        -->
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- maven-compiler-plugin: compila el código Java usando la propiedad maven.compiler.release (17). -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler.plugin.version}</version>
+            </plugin>
+            <!--
+              maven-surefire-plugin: ejecuta las pruebas de src/test/java en la fase "test"
+              y deja los reportes (.txt y .xml) en target/surefire-reports.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${surefire.plugin.version}</version>
+            </plugin>
+            <!--
+              exec-maven-plugin: permite correr el método main de App desde Maven con
+              "mvn -q compile exec:java" (la clase se toma de la propiedad exec.mainClass).
+            -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>${exec.plugin.version}</version>
+                <configuration>
+                    <mainClass>${exec.mainClass}</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
