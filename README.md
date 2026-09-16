@@ -14,8 +14,7 @@ de cada cosa) y cambies valores para ver qué pasa.
 - Git
 - IntelliJ IDEA Community (recomendado)
 
-La instalación paso a paso en Windows está en `Prerrequisitos_Instalacion_Entorno_Windows.docx`, en la carpeta
-`material-de-apoyo` de la rama `main` de este repositorio.
+La instalación paso a paso en Windows está en `material-de-apoyo/Prerrequisitos_Instalacion_Entorno_Windows.docx`.
 
 Para revisar que todo quedó bien, abre PowerShell y corre:
 
@@ -126,6 +125,7 @@ o el proxy. Intenta desde otra red una vez; después queda guardado en tu equipo
 
 En la carpeta `material-de-apoyo/`:
 
+- `Prerrequisitos_Instalacion_Entorno_Windows.docx`: cómo instalar Java, Gradle, Git e IntelliJ en Windows.
 - `Clase1_Guia_Estudio_Java_POO.docx`: explica cada tema con el código de este proyecto, qué hacer antes y
   después de clase y preguntas de repaso.
 - `Clase1_Presentacion_Java_POO.pptx`: las diapositivas de la clase.
