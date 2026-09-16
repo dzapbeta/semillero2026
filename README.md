@@ -17,7 +17,7 @@ El proyecto tiene 6 pruebas (escenarios) que salen de solo dos archivos `.featur
 
 ## Requisitos
 
-Antes de empezar necesitas tener instalado el JDK 21 (Eclipse Temurin), Gradle 9.7.1, Git e IntelliJ IDEA Community. La instalación paso a paso en Windows está en la guía `Prerrequisitos_Instalacion_Entorno_Windows.docx`, que está en la carpeta `material-de-apoyo/` de la rama `main` del repositorio.
+Antes de empezar necesitas tener instalado el JDK 21 (Eclipse Temurin), Gradle 9.7.1, Git e IntelliJ IDEA Community. La instalación paso a paso en Windows está en la guía `Prerrequisitos_Instalacion_Entorno_Windows.docx`, que está en la carpeta `material-de-apoyo/` de esta rama (también la encuentras en la rama `main`).
 
 También necesitas internet, porque las pruebas llaman a dummyjson.com.
 
@@ -100,6 +100,7 @@ El recorrido de una prueba es siempre el mismo:
 
 ```
 build.gradle, settings.gradle          configuración de Gradle (librerías y cómo se ejecutan las pruebas)
+gradle.properties                      hace que cada ejecución use un Gradle nuevo (ver "Problemas comunes")
 src/main/java/co/com/semillero/certificacion/dummyjson/
   tasks/         IniciarSesion, ConsultarProducto: lo que hace el actor
   questions/     CodigoDeRespuesta, CampoDeLaRespuesta: lo que el actor revisa
@@ -142,12 +143,15 @@ La habilidad del actor también cambia: en web era `BrowseTheWeb` (manejar un na
 
 **`gradle` no se reconoce como comando.** Falta la variable de entorno PATH. Revisa la guía de prerrequisitos.
 
+**El reporte muestra nombres de otro proyecto.** Pasa cuando Gradle reutiliza un proceso que ya corrió otro proyecto con Serenity (por ejemplo el de la clase 2). Por eso `gradle.properties` tiene `org.gradle.daemon=false`; no lo borres. El aviso "a single-use Daemon process will be forked" es normal.
+
 **Todos los escenarios salen `SKIPPED`.** El tag está mal escrito o faltan las comillas en PowerShell. Debe ser `"-Ptags=@login"`, con la arroba.
 
 ## Material de apoyo
 
 En la carpeta `material-de-apoyo/`:
 
+- `Prerrequisitos_Instalacion_Entorno_Windows.docx`: cómo instalar Java, Gradle, Git e IntelliJ en Windows.
 - `Clase3_Guia_Estudio_Screenplay_API_DataDriven.docx`: la guía para leer antes y después de clase.
 - `Clase3_Presentacion_Screenplay_API_DataDriven.pptx`: las diapositivas de la clase.
 - `Clase3_Actividad_Screenplay_API_DataDriven.docx`: la actividad que entregas el martes 29 de septiembre de 2026 a las 8:00 a.m.
