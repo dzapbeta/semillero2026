@@ -15,7 +15,6 @@ public class Variables {
         char inicial = 'D';
         // String guarda un texto y va entre comillas dobles.
         String nombre = "Diego";
-
         System.out.println("int (numero entero): " + edad);
         System.out.println("double (numero con decimales): " + precio);
         System.out.println("boolean (verdadero o falso): " + estaActivo);

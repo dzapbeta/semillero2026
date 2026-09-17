@@ -4,6 +4,8 @@ import co.com.semillero.control.Ciclos;
 import co.com.semillero.control.Condicionales;
 import co.com.semillero.herencia.Gato;
 import co.com.semillero.herencia.Perro;
+import co.com.semillero.interfaces.Avion;
+import co.com.semillero.interfaces.Pajaro;
 import co.com.semillero.polimorfismo.Calculadora;
 import co.com.semillero.poo.CuentaBancaria;
 import co.com.semillero.poo.Estudiante;
@@ -27,7 +29,9 @@ public class App {
         mostrarEncapsulamiento();
         mostrarTitulo("6. Herencia");
         mostrarHerencia();
-        mostrarTitulo("7. Polimorfismo: metodos sobrecargados");
+        mostrarTitulo("7. Interfaces: extends vs implements");
+        mostrarInterfaces();
+        mostrarTitulo("8. Polimorfismo: metodos sobrecargados");
         mostrarSobrecarga();
     }
 
@@ -79,6 +83,17 @@ public class App {
         Gato gato = new Gato("Michi");
         System.out.println(perro.getNombre() + " dice " + perro.hacerSonido());
         System.out.println(gato.getNombre() + " dice " + gato.hacerSonido());
+    }
+
+    // Un pájaro y un avión no se parecen en nada, pero los dos implementan Volador,
+    // así que los dos saben responder volar().
+    private static void mostrarInterfaces() {
+        Pajaro pajaro = new Pajaro("Gorrion");
+        Avion avion = new Avion("Boeing 737");
+        System.out.println("Con extends, Perro recibe el codigo de Animal (nombre y getNombre).");
+        System.out.println("Con implements, Pajaro y Avion reciben la obligacion de escribir volar().");
+        System.out.println(pajaro.getNombre() + " " + pajaro.volar());
+        System.out.println(avion.getModelo() + " " + avion.volar());
     }
 
     // Llama tres veces a sumar con datos distintos. Java escoge solo el método que corresponde.

@@ -69,7 +69,18 @@ mismo orden de la clase:
 6. Herencia: `Animal` es la clase padre. `Perro` y `Gato` heredan de ella con `extends`: ya tienen el nombre
    y `getNombre()` sin escribirlos, y cada uno cambia `hacerSonido()` con `@Override`. En consola ves
    `Firulais dice Guau` y `Michi dice Miau`.
-7. Polimorfismo con métodos sobrecargados: `Calculadora` tiene tres métodos que se llaman igual, `sumar`,
+7. Interfaces: `Volador` no es una clase, es una lista de obligaciones. `Pajaro` y `Avion` la usan con
+   `implements` y cada uno escribe su propio `volar()`. La diferencia con la herencia es esta: con `extends`
+   la clase hija recibe código ya hecho del padre (`Perro` recibe el nombre y `getNombre()` de `Animal`) y solo
+   puede heredar de una clase; con `implements` la clase no recibe código, recibe la obligación de escribir los
+   métodos de la interfaz, y puede implementar varias. En consola ves:
+
+   ```
+   Gorrion vuela moviendo las alas
+   Boeing 737 vuela con sus turbinas
+   ```
+
+8. Polimorfismo con métodos sobrecargados: `Calculadora` tiene tres métodos que se llaman igual, `sumar`,
    pero cada uno recibe datos distintos: dos enteros, tres enteros o dos números con decimales. Java escoge cuál
    usar mirando cuántos datos le mandas y de qué tipo son. En consola ves:
 
@@ -103,7 +114,7 @@ Otro error que vas a ver en clase aparece si en `App.java`, debajo de `cuenta.de
 
 ```
 > Task :compileJava FAILED
-...\App.java:67: error: saldo has private access in CuentaBancaria
+...\App.java:71: error: saldo has private access in CuentaBancaria
         cuenta.saldo = -500;
               ^
 1 error
@@ -128,6 +139,7 @@ se cambia con `depositar()` o `retirar()`.
         ├── poo/Estudiante.java         clase, objeto y constructor
         ├── poo/CuentaBancaria.java     encapsulamiento
         ├── herencia/                   Animal (padre), Perro y Gato (hijas)
+        ├── interfaces/                 Volador (interfaz), Pajaro y Avion (implements)
         └── polimorfismo/Calculadora.java  tres métodos sumar (sobrecarga)
 ```
 
