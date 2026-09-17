@@ -1,15 +1,15 @@
 package co.com.semillero.variables;
 
-// Muestra los tipos de datos básicos de Java con ejemplos de la vida diaria.
+// Clase Variables: muestra los tipos de datos básicos de Java.
 public class Variables {
 
-    // Crea una variable de cada tipo, la imprime y hace una suma y una concatenación.
+    // Crea una variable de cada tipo, las muestra en consola y hace una suma y una unión de textos.
     public static void mostrarTiposDeDatos() {
         // int guarda números enteros, sin decimales.
         int edad = 20;
         // double guarda números con decimales.
         double precio = 15500.50;
-        // boolean solo puede ser true (verdadero) o false (falso).
+        // boolean solo puede valer true (verdadero) o false (falso).
         boolean estaActivo = true;
         // char guarda una sola letra y va entre comillas simples.
         char inicial = 'D';

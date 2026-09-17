@@ -1,12 +1,14 @@
 package co.com.semillero.herencia;
 
-// Clase padre. Tiene lo que comparten todos los animales: un nombre y un sonido.
+// Clase Animal: es la clase padre.
+// Guarda lo que tienen todos los animales (un nombre y un sonido) para no repetirlo en cada animal.
 public class Animal {
 
-    // Nombre del animal. Es protected para que las clases hijas también lo puedan usar.
+    // Nombre del animal, por ejemplo "Firulais".
+    // protected quiere decir: lo pueden usar esta clase y sus clases hijas (Perro y Gato).
     protected String nombre;
 
-    // Constructor: recibe el nombre del animal.
+    // Constructor: se ejecuta cuando creas un animal con new y guarda su nombre.
     public Animal(String nombre) {
         this.nombre = nombre;
     }
@@ -16,7 +18,8 @@ public class Animal {
         return nombre;
     }
 
-    // Sonido genérico. Las clases hijas lo cambian por su propio sonido.
+    // Devuelve el sonido del animal. Aquí no sabemos qué animal es, por eso devuelve "...".
+    // Cada clase hija lo cambia por su propio sonido.
     public String hacerSonido() {
         return "...";
     }

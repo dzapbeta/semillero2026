@@ -66,8 +66,21 @@ mismo orden de la clase:
 4. `Estudiante` muestra una clase y dos objetos creados con `new`.
 5. `CuentaBancaria` guarda el saldo como privado. Solo cambia con `depositar()` y `retirar()`, y nunca queda negativo.
    En consola ves cómo se rechazan un depósito negativo y un retiro mayor al saldo.
-6. `Animal` es la clase padre. `Perro` y `Gato` heredan de ella y cada uno cambia `hacerSonido()`. En `App`
-   se recorre una lista de `Animal` y cada objeto responde con su propio sonido: eso es polimorfismo.
+6. Herencia: `Animal` es la clase padre. `Perro` y `Gato` heredan de ella con `extends`: ya tienen el nombre
+   y `getNombre()` sin escribirlos, y cada uno cambia `hacerSonido()` con `@Override`. En consola ves
+   `Firulais dice Guau` y `Michi dice Miau`.
+7. Polimorfismo con métodos sobrecargados: `Calculadora` tiene tres métodos que se llaman igual, `sumar`,
+   pero cada uno recibe datos distintos: dos enteros, tres enteros o dos números con decimales. Java escoge cuál
+   usar mirando cuántos datos le mandas y de qué tipo son. En consola ves:
+
+   ```
+   sumar(2, 3) = 5
+   sumar(2, 3, 4) = 9
+   sumar(2.5, 1.5) = 4.0
+   ```
+
+   No lo confundas con lo que hace `Perro`: sobrescribir (`@Override`) es cambiar un método que viene del padre;
+   sobrecargar es tener varios métodos con el mismo nombre y datos distintos en la misma clase.
 
 ## Cómo leer un error de Java
 
@@ -85,11 +98,12 @@ eso está el mensaje que importa. Por ejemplo, si borras el punto y coma de `int
 Léelo así: primero el archivo y la línea (`Variables.java:9`), después qué pasó (`';' expected`, faltó un punto
 y coma) y abajo la línea con un `^` que señala el sitio exacto.
 
-Otro error que vas a ver en clase aparece si en `App.java` intentas escribir `cuenta.saldo = -500;`:
+Otro error que vas a ver en clase aparece si en `App.java`, debajo de `cuenta.depositar(100000);`, escribes
+`cuenta.saldo = -500;`:
 
 ```
 > Task :compileJava FAILED
-...\App.java:66: error: saldo has private access in CuentaBancaria
+...\App.java:67: error: saldo has private access in CuentaBancaria
         cuenta.saldo = -500;
               ^
 1 error
@@ -113,7 +127,8 @@ se cambia con `depositar()` o `retirar()`.
         ├── control/Ciclos.java         for, while y for-each
         ├── poo/Estudiante.java         clase, objeto y constructor
         ├── poo/CuentaBancaria.java     encapsulamiento
-        └── herencia/                   Animal (padre), Perro y Gato (hijas)
+        ├── herencia/                   Animal (padre), Perro y Gato (hijas)
+        └── polimorfismo/Calculadora.java  tres métodos sumar (sobrecarga)
 ```
 
 Cada carpeta dentro de `semillero` es un paquete, una forma de agrupar clases del mismo tema. Gradle crea una

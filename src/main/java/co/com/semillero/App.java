@@ -2,19 +2,18 @@ package co.com.semillero;
 
 import co.com.semillero.control.Ciclos;
 import co.com.semillero.control.Condicionales;
-import co.com.semillero.herencia.Animal;
 import co.com.semillero.herencia.Gato;
 import co.com.semillero.herencia.Perro;
+import co.com.semillero.polimorfismo.Calculadora;
 import co.com.semillero.poo.CuentaBancaria;
 import co.com.semillero.poo.Estudiante;
 import co.com.semillero.variables.Variables;
 
-import java.util.List;
-
-// Punto de entrada del proyecto. Llama a cada ejemplo en el mismo orden en que los vemos en clase.
+// Clase App: es la que arranca el programa.
+// Ejecuta los ejemplos en el mismo orden en que los vemos en clase.
 public class App {
 
-    // main es el método que Java ejecuta primero cuando corres "gradle run".
+    // main es lo primero que Java ejecuta cuando escribes "gradle run".
     public static void main(String[] args) {
         mostrarTitulo("1. Variables y tipos de datos");
         Variables.mostrarTiposDeDatos();
@@ -26,11 +25,13 @@ public class App {
         mostrarClasesYObjetos();
         mostrarTitulo("5. Encapsulamiento");
         mostrarEncapsulamiento();
-        mostrarTitulo("6. Herencia y polimorfismo");
-        mostrarPolimorfismo();
+        mostrarTitulo("6. Herencia");
+        mostrarHerencia();
+        mostrarTitulo("7. Polimorfismo: metodos sobrecargados");
+        mostrarSobrecarga();
     }
 
-    // Prueba el if/else con tres notas y el switch con tres colores, uno de ellos que no existe.
+    // Prueba el if/else con tres notas y el switch con tres colores (el azul no existe en el semáforo).
     private static void mostrarCondicionales() {
         System.out.println("Nota 4.2 -> " + Condicionales.evaluarNota(4.2));
         System.out.println("Nota 3.0 -> " + Condicionales.evaluarNota(3.0));
@@ -40,7 +41,7 @@ public class App {
         System.out.println("Semaforo azul -> " + Condicionales.accionSemaforo("azul"));
     }
 
-    // Ejecuta los tres ciclos, cada uno con un subtítulo para saber cuál está imprimiendo.
+    // Ejecuta los tres ciclos. Antes de cada uno imprime una línea para saber cuál está corriendo.
     private static void mostrarCiclos() {
         System.out.println("-- for: contar de 1 a 5");
         Ciclos.contarConFor();
@@ -50,7 +51,7 @@ public class App {
         Ciclos.saludarConForEach();
     }
 
-    // Crea dos objetos con la misma clase Estudiante. Cada uno guarda sus propios datos.
+    // Crea dos estudiantes con el mismo molde (la clase Estudiante). Cada uno tiene sus propios datos.
     private static void mostrarClasesYObjetos() {
         Estudiante ana = new Estudiante("Ana", 4.5);
         Estudiante luis = new Estudiante("Luis", 2.8);
@@ -58,7 +59,7 @@ public class App {
         System.out.println(luis.presentarse());
     }
 
-    // Usa la cuenta solo a través de sus métodos. Los valores que no tienen sentido se rechazan.
+    // Usa la cuenta solo con sus métodos. Los valores que no tienen sentido se rechazan.
     private static void mostrarEncapsulamiento() {
         CuentaBancaria cuenta = new CuentaBancaria("Ana");
         System.out.println("Cuenta nueva de " + cuenta.getTitular() + ", saldo: " + cuenta.getSaldo());
@@ -71,15 +72,24 @@ public class App {
         System.out.println("Saldo final: " + cuenta.getSaldo());
     }
 
-    // Recorre una lista de Animal. Cada objeto responde con su propio sonido: eso es polimorfismo.
-    private static void mostrarPolimorfismo() {
-        List<Animal> animales = List.of(new Perro("Firulais"), new Gato("Michi"));
-        for (Animal animal : animales) {
-            System.out.println(animal.getNombre() + " dice " + animal.hacerSonido());
-        }
+    // Crea un perro y un gato. Los dos usan getNombre() que heredaron de Animal,
+    // pero cada uno hace su propio sonido.
+    private static void mostrarHerencia() {
+        Perro perro = new Perro("Firulais");
+        Gato gato = new Gato("Michi");
+        System.out.println(perro.getNombre() + " dice " + perro.hacerSonido());
+        System.out.println(gato.getNombre() + " dice " + gato.hacerSonido());
     }
 
-    // Imprime un título para separar cada ejemplo en la consola.
+    // Llama tres veces a sumar con datos distintos. Java escoge solo el método que corresponde.
+    private static void mostrarSobrecarga() {
+        Calculadora calculadora = new Calculadora();
+        System.out.println("sumar(2, 3) = " + calculadora.sumar(2, 3));
+        System.out.println("sumar(2, 3, 4) = " + calculadora.sumar(2, 3, 4));
+        System.out.println("sumar(2.5, 1.5) = " + calculadora.sumar(2.5, 1.5));
+    }
+
+    // Imprime una línea en blanco y un título para separar cada ejemplo en la consola.
     private static void mostrarTitulo(String titulo) {
         System.out.println();
         System.out.println("===== " + titulo + " =====");

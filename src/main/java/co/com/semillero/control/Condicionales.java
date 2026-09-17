@@ -1,12 +1,13 @@
 package co.com.semillero.control;
 
-// Ejemplos de decisiones: el programa elige un camino según un dato.
+// Clase Condicionales: ejemplos de cómo el programa toma decisiones según un dato.
 public class Condicionales {
 
-    // Nota mínima para aprobar. Es una constante: final significa que no cambia.
+    // Nota mínima para aprobar. final quiere decir que este valor nunca cambia.
     public static final double NOTA_MINIMA = 3.0;
 
-    // Usa if/else: si la nota es 3.0 o más devuelve "Aprobado"; si no, "Reprobado".
+    // Decide si una nota aprueba usando if/else.
+    // Si la nota es 3.0 o más devuelve "Aprobado"; si no, devuelve "Reprobado".
     public static String evaluarNota(double nota) {
         if (nota >= NOTA_MINIMA) {
             return "Aprobado";
@@ -15,7 +16,8 @@ public class Condicionales {
         }
     }
 
-    // Usa switch: según el color del semáforo devuelve lo que debe hacer el conductor.
+    // Dice qué hacer según el color del semáforo usando switch.
+    // switch compara el color con cada case; si ninguno coincide, usa default.
     public static String accionSemaforo(String color) {
         switch (color) {
             case "verde":
